@@ -2,83 +2,101 @@ const { AuthenticationError, UserInputError } = require("apollo-server");
 
 const Post = require("../../models/Post");
 const checkAuth = require("../../util/check-auth");
+const { validateCreatePost } = require("../../util/validators");
 
 module.exports = {
-  Query: {
-    async getPosts() {
-      try {
-        const posts = await Post.find().sort({ createdAt: -1 });
-        return posts;
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
-    async getPost(_, { postId }) {
-      try {
-        const post = await Post.findById(postId);
-        if (post) {
-          return post;
-        } else {
-          throw new Error("Post not found");
+    Query: {
+        getPosts: async () => {
+            try {
+                const posts = await Post.find().sort({ createdAt: -1 });
+                return posts;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
+        getPost: async (_, { postId }) => {
+            try {
+                const post = await Post.findById(postId);
+
+                if (post) {
+                    return post;
+                } else {
+                    throw new Error("Post Not Found");
+                }
+            } catch (err) {
+                throw new Error("Caught An Error => " + err);
+            }
         }
-      } catch (err) {
-        throw new Error(err);
-      }
     },
-  },
-  Mutation: {
-    async createPost(_, { body }, context) {
-      const user = checkAuth(context);
-      if (argsToArgsConfig.body.trim() === "") {
-        throw new Error("Post body cannot be empty");
-      }
+    Mutation: {
+        createPost: async (_, { body }, context) => {
+            const user = checkAuth(context);
 
-      const newPost = new Post({
-        body,
-        user: user.id,
-        username: user.username,
-        createdAt: new Date().toISOString(),
-      });
-      const post = await newPost.save();
+            const { valid, errors } = validateCreatePost(body);
+            if (!valid) {
+                throw new UserInputError("Errors", { errors });
+            }
 
-      return post;
-    },
-    async deletePost(_, { postId }, context) {
-      const user = checkAuth(context);
+            const newPost = new Post({
+                body,
+                user: user.id,
+                username: user.username,
+                createdAt: new Date().toISOString()
+            });
 
-      try {
-        const post = await post.findById(postId);
-        if (user.username === post.username) {
-          await post.delete();
-          return "Post has been succesfully deleted";
-        } else {
-          throw new AuthenticationError("Task cannot be performed");
+            const post = await newPost.save();
+
+            context.pubSub.publish("NEW_POST", {
+                newPost: post
+            });
+
+            return post;
+        },
+        deletePost: async (_, { postId }, context) => {
+            const user = checkAuth(context);
+
+            try {
+                const post = await Post.findById(postId);
+
+                if (post) {
+                    if (user.username === post.username) {
+                        await post.deleteOne();
+                        return "Post Deleted Successfully";
+                    } else {
+                        throw new AuthenticationError("Action Not Allowed");
+                    }
+                }
+            } catch (err) {
+                throw new Error("Caught An Error => " + err);
+            }
+        },
+        likePost: async (_, { postId }, context) => {
+            const { username } = checkAuth(context);
+
+            const post = await Post.findById(postId);
+
+            if (post) {
+                if (post.likes.find((like) => like.username === username)) {
+                    // Post Already Liked - Unlike It
+                    post.likes = post.likes.filter(
+                        (like) => like.username !== username
+                    );
+                } else {
+                    // Post Not Liked - Like It
+                    post.likes.push({
+                        username,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+
+                await post.save();
+                return post;
+            } else throw new UserInputError("Post Not Found");
         }
-      } catch (err) {
-        throw new Error(err);
-      }
     },
-    async likePost(_, { postId }, context) {
-      const { username } = checkAuth(context);
-
-      const post = await Post.findById(postId);
-      if (post) {
-        //making sure that the post actually exist for it to be given a like
-
-        if (post.likes.find((like) => like.username === username)) {
-          //Post at this stage is already being like, unlike it
-          post.likes = post.likes.filter((like) => like.username !== username);
-        } else {
-          //Notliked, like post
-          post.likes.push({
-            username,
-            createdAt: new Date().toISOString(),
-          });
+    Subscription: {
+        newPost: {
+            subscribe: (_, __, { pubSub }) => pubSub.asyncIterator("NEW_POST")
         }
-
-        await post.save();
-        return post;
-      } else throw new UserInputError("Post not found");
-    },
-  },
+    }
 };
