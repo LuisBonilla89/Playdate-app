@@ -8,51 +8,48 @@ import PostForm from "../components/PostForm";
 import { FETCH_POSTS_QUERY } from "../util/graphql";
 
 function Home() {
-    const { loading, _, data } = useQuery(FETCH_POSTS_QUERY);
+  const { loading, _, data } = useQuery(FETCH_POSTS_QUERY);
 
-    const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
-    return (
-        <Grid columns={3}>
-            <Grid.Row className="page-title">
-                {user ? (
-                    <h1>Welcome {capitalizeFirstLetter(user.username)}</h1>
-                ) : (
-                    <h1>Welcome!</h1>
-                )}
-            </Grid.Row>
-            <Grid.Row>
-                {user && (
-                    <Grid.Column>
-                        <Transition.Group duration={200}>
-                            <PostForm />
-                        </Transition.Group>
-                    </Grid.Column>
-                )}
-            </Grid.Row>
-            <Grid.Row>
-                {loading ? (
-                    <h1>Loading Posts...</h1>
-                ) : (
-                    <Transition.Group duration={500}>
-                        {data.getPosts &&
-                            data.getPosts.map((post) => (
-                                <Grid.Column
-                                    key={post.id}
-                                    style={{ marginBottom: 40 }}
-                                >
-                                    <PostCard post={post} />
-                                </Grid.Column>
-                            ))}
-                    </Transition.Group>
-                )}
-            </Grid.Row>
-        </Grid>
-    );
+  return (
+    <Grid columns={3}>
+      <Grid.Row className="page-title">
+        {user ? (
+          <h1>My Play-Date {capitalizeFirstLetter(user.username)}</h1>
+        ) : (
+          <h1>My Play-Date!</h1>
+        )}
+      </Grid.Row>
+      <Grid.Row>
+        {user && (
+          <Grid.Column>
+            <Transition.Group duration={200}>
+              <PostForm />
+            </Transition.Group>
+          </Grid.Column>
+        )}
+      </Grid.Row>
+      <Grid.Row>
+        {loading ? (
+          <h1>Loading Posts...</h1>
+        ) : (
+          <Transition.Group duration={500}>
+            {data.getPosts &&
+              data.getPosts.map((post) => (
+                <Grid.Column key={post.id} style={{ marginBottom: 40 }}>
+                  <PostCard post={post} />
+                </Grid.Column>
+              ))}
+          </Transition.Group>
+        )}
+      </Grid.Row>
+    </Grid>
+  );
 }
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export default Home;
