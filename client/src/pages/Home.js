@@ -16,9 +16,9 @@ function Home() {
     <Grid columns={3}>
       <Grid.Row className="page-title">
         {user ? (
-          <h1>My Play-Date {capitalizeFirstLetter(user.username)}</h1>
+          <h1>Welcome {capitalizeFirstLetter(user.username)}</h1>
         ) : (
-          <h1>My Play-Date!</h1>
+          <h1>MY PLAY-DATE</h1>
         )}
       </Grid.Row>
       <Grid.Row>
