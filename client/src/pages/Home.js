@@ -18,7 +18,9 @@ function Home() {
         {user ? (
           <h1>Welcome {capitalizeFirstLetter(user.username)}</h1>
         ) : (
-          <h1>MY PLAY-DATE</h1>
+          <h1 className="app-title" data-text="PLAYDATE">
+            PLAYDATE
+          </h1>
         )}
       </Grid.Row>
       <Grid.Row>
