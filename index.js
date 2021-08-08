@@ -12,16 +12,16 @@ const pubSub = new PubSub();
 const PORT = process.env.port || 5000;
 
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: ({ req }) => ({ req, pubSub })
+  typeDefs,
+  resolvers,
+  context: ({ req }) => ({ req, pubSub }),
 });
 
 mongoose
-    .connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log("⚽ Connected to MongoDB");
-        return server.listen({ port: PORT });
-    })
-    .then((res) => console.log(`⚡ Server Running @ ${res.url}`))
-    .catch((err) => console.log(`Error Starting Server => ${err}`));
+  .connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("😃 You are connected to MongoDB");
+    return server.listen({ port: PORT });
+  })
+  .then((res) => console.log(`🚀 🚀 The server is  running at ${res.url}`))
+  .catch((err) => console.log(`Error Starting Server => ${err}`));
