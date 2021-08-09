@@ -16,7 +16,7 @@ function MenuBar() {
   const handleItemClick = (e, { name }) => setActiveItem(name);
 
   const menuBar = user ? (
-    <Menu pointing secondary size="massive" color="yellow">
+    <Menu pointing secondary size="massive" inverted color="blue">
       <Menu.Item
         name={user.username.toLowerCase()}
         active
@@ -28,7 +28,7 @@ function MenuBar() {
       </Menu.Menu>
     </Menu>
   ) : (
-    <Menu pointing secondary size="massive" color="yellow">
+    <Menu pointing secondary size="massive" inverted color="blue">
       <Menu.Item
         name="home"
         active={activeItem === "home"}

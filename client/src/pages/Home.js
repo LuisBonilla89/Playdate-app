@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
-import { Grid, Transition } from "semantic-ui-react";
+import { Container, Grid, Transition } from "semantic-ui-react";
 
 import { AuthContext } from "../context/auth";
 import PostCard from "../components/PostCard";
@@ -13,40 +13,42 @@ function Home() {
   const { user } = useContext(AuthContext);
 
   return (
-    <Grid columns={3}>
-      <Grid.Row className="page-title">
-        {user ? (
-          <h1>Welcome {capitalizeFirstLetter(user.username)}</h1>
-        ) : (
-          <h1 className="app-title" data-text="PLAYDATE">
-            PLAYDATE
-          </h1>
-        )}
-      </Grid.Row>
-      <Grid.Row>
-        {user && (
-          <Grid.Column>
-            <Transition.Group duration={200}>
-              <PostForm />
+    <Container>
+      <Grid columns={3}>
+        <Grid.Row className="page-title">
+          {user ? (
+            <h1>Welcome {capitalizeFirstLetter(user.username)}</h1>
+          ) : (
+            <h1 className="app-title" data-text="MyPlayDate">
+              MyPlayDate
+            </h1>
+          )}
+        </Grid.Row>
+        <Grid.Row>
+          {user && (
+            <Grid.Column>
+              <Transition.Group duration={200}>
+                <PostForm />
+              </Transition.Group>
+            </Grid.Column>
+          )}
+        </Grid.Row>
+        <Grid.Row>
+          {loading ? (
+            <h1>Loading Posts...</h1>
+          ) : (
+            <Transition.Group duration={500}>
+              {data.getPosts &&
+                data.getPosts.map((post) => (
+                  <Grid.Column key={post.id} style={{ marginBottom: 40 }}>
+                    <PostCard post={post} />
+                  </Grid.Column>
+                ))}
             </Transition.Group>
-          </Grid.Column>
-        )}
-      </Grid.Row>
-      <Grid.Row>
-        {loading ? (
-          <h1>Loading Posts...</h1>
-        ) : (
-          <Transition.Group duration={500}>
-            {data.getPosts &&
-              data.getPosts.map((post) => (
-                <Grid.Column key={post.id} style={{ marginBottom: 40 }}>
-                  <PostCard post={post} />
-                </Grid.Column>
-              ))}
-          </Transition.Group>
-        )}
-      </Grid.Row>
-    </Grid>
+          )}
+        </Grid.Row>
+      </Grid>
+    </Container>
   );
 }
 
