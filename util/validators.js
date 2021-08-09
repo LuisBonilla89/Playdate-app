@@ -1,60 +1,60 @@
 module.exports.validateRegisterInput = (
-    username,
-    email,
-    password,
-    confirmPassword
+  username,
+  email,
+  password,
+  confirmPassword
 ) => {
-    const errors = {};
+  const errors = {};
 
-    if (username.trim() === "") {
-        errors.username = "Username Must Not Be Empty";
-    }
-    if (email.trim() === "") {
-        errors.email = "Email Must Not Be Empty";
-    } else {
-        const regex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-.\w]*[0-9a-zA-Z])+[a-zA-Z]{2,9})$/;
+  if (username.trim() === "") {
+    errors.username = "Username cannot be empty";
+  }
+  if (email.trim() === "") {
+    errors.email = "Email cannot be empty";
+  } else {
+    const regex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-.\w]*[0-9a-zA-Z])+[a-zA-Z]{2,9})$/;
 
-        if (!email.match(regex)) {
-            errors.email = "Email Must Be A Valid Email Address";
-        }
+    if (!email.match(regex)) {
+      errors.email = "Email must be a valid email address";
     }
-    if (password === "") {
-        errors.password = "Password Must Not Be Empty";
-    } else if (password !== confirmPassword) {
-        errors.confirmPassword = "Passwords Must Match";
-    }
+  }
+  if (password === "") {
+    errors.password = "Password cannot be empty";
+  } else if (password !== confirmPassword) {
+    errors.confirmPassword = "Passwords do not match";
+  }
 
-    return {
-        errors,
-        valid: Object.keys(errors).length < 1
-    };
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
 };
 
 module.exports.validateLoginInput = (username, password) => {
-    const errors = {};
+  const errors = {};
 
-    if (username.trim() === "") {
-        errors.username = "Username Must Not Be Empty";
-    }
-    if (password === "") {
-        errors.password = "Password Must Not Be Empty";
-    }
+  if (username.trim() === "") {
+    errors.username = "Username cannot be empty";
+  }
+  if (password === "") {
+    errors.password = "Password cannot be empty";
+  }
 
-    return {
-        errors,
-        valid: Object.keys(errors).length < 1
-    };
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
 };
 
 module.exports.validateCreatePost = (body) => {
-    const errors = {};
+  const errors = {};
 
-    if (body.trim() === "") {
-        errors.post = "Post Body Must Not Be Empty";
-    }
+  if (body.trim() === "") {
+    errors.post = "Body post cannot be empty";
+  }
 
-    return {
-        errors,
-        valid: Object.keys(errors).length < 1
-    };
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
 };
