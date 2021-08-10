@@ -23,5 +23,5 @@ mongoose
     console.log("😃 You are connected to MongoDB");
     return server.listen({ port: PORT });
   })
-  .then((res) => console.log(`🚀 🚀 The server is  running at ${res.url}`))
+  .then((res) => console.log(` 🚀🚀🚀 The server is  running at ${res.url}`))
   .catch((err) => console.log(`Error Starting Server => ${err}`));
