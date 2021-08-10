@@ -1,5 +1,8 @@
-module.exports = {
-  MONGODB: process.env.MONGO_DB,
+require("dotenv").config();
 
-  SECRET_KEY: "<random_secret_key_here>",
+module.exports = {
+  MONGODB:
+    "mongodb+srv://" +
+    process.env.USER_PASS +
+    "@cluster0.fgntw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
 };

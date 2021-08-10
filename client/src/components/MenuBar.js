@@ -3,7 +3,6 @@ import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../context/auth";
-import styled from "styled-components";
 
 function MenuBar() {
   const { user, logout } = useContext(AuthContext);
@@ -57,9 +56,5 @@ function MenuBar() {
 
   return menuBar;
 }
-export const Button = styled.button`
-  width: 200px;
-  height: 50px;
-  background-color: red;
-`;
+
 export default MenuBar;

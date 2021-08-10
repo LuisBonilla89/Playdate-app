@@ -34,13 +34,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
-// db.once("open", () => {
-//   app.listen(PORT, () => {
-//     console.log(`API running on port ${PORT}!`);
-//     console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
-//   });
-// });
-
 mongoose
   .connect(process.env.MONGODB_URI || MONGODB, {
     useNewUrlParser: true,
