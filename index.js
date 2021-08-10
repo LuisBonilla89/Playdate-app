@@ -4,11 +4,11 @@ const { ApolloServer } = require("apollo-server-express");
 const { PubSub } = require("apollo-server");
 const mongoose = require("mongoose");
 const { MONGODB } = require("./config");
+const path = require("path");
 
 // Relatives
 const typeDefs = require("./graphql/typeDefs");
 const resolvers = require("./graphql/resolvers");
-const { db } = require("./models/Post");
 
 const app = express();
 
