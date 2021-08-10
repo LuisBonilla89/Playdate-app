@@ -4,17 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: No Tests\" && exit 1",
+    "start": "node index.js",
     "build": "cd client && npm run build",
-    "install-client": "cd client && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build",
-    "serve": "node index.js",
-    "start": "node index.js"
+    "install": "cd client && npm install",
+    "development": "concurrently \"npm run start \" \"cd client && npm start\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apollo-server-express": "^2.19.0",
     "apollo-server": "^2.18.2",
     "bcryptjs": "^2.4.3",
     "graphql": "^15.3.0",
@@ -22,6 +21,7 @@
     "mongoose": "^5.10.9"
   },
   "devDependencies": {
+    "concurrently": "^6.2.1",
     "nodemon": "^2.0.6"
   }
 }
