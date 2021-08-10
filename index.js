@@ -18,10 +18,17 @@ const server = new ApolloServer({
 });
 
 mongoose
-  .connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGODB_URI || MONGODB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("😃 You are connected to MongoDB");
     return server.listen({ port: PORT });
   })
   .then((res) => console.log(` 🚀🚀🚀 The server is  running at ${res.url}`))
   .catch((err) => console.log(`Error Starting Server => ${err}`));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
