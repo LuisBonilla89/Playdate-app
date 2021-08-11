@@ -40,7 +40,7 @@ The following image is a screenshot of the app.
 
 ## Github:
 
-### https://luisbonilla89.github.io/Playdate-app/
+### https://github.com/LuisBonilla89/Playdate-app
 
 ## License
 
